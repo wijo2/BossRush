@@ -93,12 +93,23 @@ namespace BossRush
         {
             FightName.dfs,
             FightName.graveyard_1,
+            FightName.graveyard_2,
             FightName.gotd, 
+            /*FightName.manor_crow_1, these need special work cause always same order thing not worth for now at least
+            FightName.manor_crow_3,
+            FightName.manor_crow_4,*/
             FightName.ava1,
+            FightName.forest_roman_gardens,
             FightName.forest_mushroom,
+            FightName.dungeon_crow_1,
+            FightName.dungeon_crow_2,
+            FightName.dungeon_crow_3,
             FightName.dungeon_water,
             FightName.ava2,
             FightName.lockstone_crow_1,
+            FightName.lockstone_crow_2,
+            FightName.lockstone_crow_3,
+            FightName.lockstone_crow_4,
             FightName.ava3,
             FightName.ice_arena,
             FightName.betty,
