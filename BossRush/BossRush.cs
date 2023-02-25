@@ -120,8 +120,8 @@ namespace BossRush
             }
             PlayerEquipment.instance.SetRightHandWeapon(exists);
 
-            Inventory.instance.SetItemCount("stat_melee", 9999);
-            Time.timeScale = 6;
+            //Inventory.instance.SetItemCount("stat_melee", 9999); //debug buffs
+            //Time.timeScale = 6;
 
             if (PlayerGlobal.instance != null)
             {
