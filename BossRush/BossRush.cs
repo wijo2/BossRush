@@ -35,7 +35,7 @@ namespace BossRush
 
         public static float titleTimer = 0; //timer for autoquit after killing lod
 
-        internal static new ManualLogSource Log;
+        internal static ManualLogSource Log;
 
         public static GameSave save;
 
