@@ -371,7 +371,6 @@ namespace BossRush
         public virtual Vector2 updateSubs(Vector2 startCorner, float gap, int fontSize)
         {
             Vector2 updatingCorner = startCorner;
-            Vector2 size;
             foreach (OptionCategory category in subCategories)
             {
                 updatingCorner = category.OnGUI(updatingCorner, gap, fontSize) + new Vector2(0, gap);
