@@ -17,7 +17,7 @@ namespace BossRush
     {
         private const string pluginGuid = "ddoor.BossRush.wijo";
         private const string pluginName = "BossRush";
-        private const string pluginVersion = "0.0.2";
+        private const string pluginVersion = "0.0.3";
 
         public static bool active = false; //is the mod active in current playing session
 
@@ -269,13 +269,22 @@ namespace BossRush
         {
             if (startOnNextLoad)
             {
+                startOnNextLoad = false;
+
+                //flags
+                var c = GameSave.currentSave;
+                var copy = c.boolKeys.Keys.ToArray();
+                foreach (var flag in copy)
+                {
+                    c.boolKeys[flag] = false;
+                }
+
                 foreach (var name in flags)
                 {
                     GameSave.currentSave.SetKeyState(name, true, true);
                 }
 
-                startOnNextLoad = false;
-
+                //fights list
                 var newFights = new List<FightName>();
                 foreach (var fight in OptionsMenu.fights)
                 {
@@ -293,7 +302,8 @@ namespace BossRush
                     fightsYetToBeFought.Add(FightStorage.fightDatas[fight]);
                 }
                 FightCounter = -1;
-                //L("Fight counter reset to: " + FightCounter.ToString());
+
+                //start!
                 LoadNextMap(0);
                 return false;
             }
