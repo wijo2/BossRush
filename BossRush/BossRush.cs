@@ -77,6 +77,7 @@ namespace BossRush
         [HarmonyPostfix]
         public static void DoSceneStartThings()
         {
+            save = GameSave.GetSaveData();
             if (!active) { return; }
 
             if (PlayerGlobal.instance && !PlayerGlobal.instance.DidJustRespawn() && canAddToFughtCounter)
@@ -131,12 +132,8 @@ namespace BossRush
                 PlayerGlobal.instance.gameObject.GetComponent<PlayerMovementControl>().SetCanLimitVelocity(true);
                 PlayerGlobal.instance.gameObject.GetComponentInChildren<WeaponControl>().animationControl.EndSlash();
             }
-            save = GameSave.GetSaveData();
+
             save.SetKeyState("c_oldcrowdead", false, false);
-            foreach (var name in flags) //maybe this doesn't need to happen every time but saves are wierd and I don't want to risk it, it takes so little time anyways and it's right after a load
-            {
-                save.SetKeyState(name, true, true);
-            }
 
             save.SetSpawnPoint(SceneManager.GetActiveScene().name, null);
 
@@ -254,6 +251,11 @@ namespace BossRush
         {
             if (startOnNextLoad)
             {
+                foreach (var name in flags)
+                {
+                    GameSave.currentSave.SetKeyState(name, true, true);
+                }
+
                 startOnNextLoad = false;
 
                 var newFights = new List<FightName>();

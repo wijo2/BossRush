@@ -57,12 +57,16 @@ namespace BossRush
             GUI.skin.toggle.fontSize = size;
         }
 
-        public static GUIStyle EnableToggleResize()
+        public static void EnableToggleResize()
         {
-            var old = GUI.skin.toggle;
             GUI.skin.toggle.border = new RectOffset(0, 0, 0, 0);
             GUI.skin.toggle.overflow = new RectOffset(0, 0, 0, 0);
-            return old;
+        }
+
+        public static void ResetToggleResize()
+        {
+            GUI.skin.toggle.border = new RectOffset(14, 0, 14, 0);
+            GUI.skin.toggle.overflow = new RectOffset(-1, 0, -4, 0);
         }
     }
 
@@ -156,9 +160,9 @@ namespace BossRush
 
             var rect = new Rect(startCorner.x, startCorner.y, r.y * 0.8f, r.y * 0.8f);
 
-            var old = GUIBox.EnableToggleResize();
+            GUIBox.EnableToggleResize();
             state = GUI.Toggle(rect, state, "");
-            GUI.skin.toggle = old;
+            GUIBox.ResetToggleResize();
 
             var lRect = new Rect(startCorner.x + r.y, startCorner.y - r.y * 0.1f, r.x, height);
             GUI.Label(lRect, text);
