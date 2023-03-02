@@ -34,6 +34,7 @@ namespace BossRush
         public static bool startOnNextLoad = false;
 
         public static float titleTimer = 0; //timer for autoquit after killing lod
+        public static bool quitOnNextFade = false;
 
         internal static ManualLogSource Log;
 
@@ -61,14 +62,21 @@ namespace BossRush
                 titleTimer -= Time.fixedDeltaTime;
                 if (titleTimer <= 0)
                 {
-                    PlayerGlobal.instance.UnPauseInput();
-                    UIMenuPauseController.instance.Pause();
-                    var o = Resources.FindObjectsOfTypeAll<UIMenuOptions>()[0];
-                    o.gameObject.SetActive(true);
-                    o.ExitSession();
-                    o.ClosePrompt_ExitToMenu(true);
+                    SQ();
                 }
             }
+
+            if (quitOnNextFade == true && !ScreenFade.instance.IsFading()) { SQ(); }
+        }
+
+        public static void SQ()
+        {
+            PlayerGlobal.instance.UnPauseInput();
+            UIMenuPauseController.instance.Pause();
+            var o = Resources.FindObjectsOfTypeAll<UIMenuOptions>()[0];
+            o.gameObject.SetActive(true);
+            o.ExitSession();
+            o.ClosePrompt_ExitToMenu(true);
         }
 
         public static void L(string text) { Log.LogWarning(text); } //debugging c:
@@ -78,7 +86,7 @@ namespace BossRush
         public static void DoSceneStartThings()
         {
             save = GameSave.GetSaveData();
-            if (!active) { return; }
+            if (!active || SceneManager.GetActiveScene().name == "TitleScreen") { return; }
 
             if (PlayerGlobal.instance && !PlayerGlobal.instance.DidJustRespawn() && canAddToFughtCounter)
             {
@@ -194,19 +202,29 @@ namespace BossRush
                 PlayerGlobal.instance.gameObject.transform.parent.GetComponentInChildren<PlayerAnimation>().EndSlash();
             }
 
-            canAddToFughtCounter = true;
-            fightsYetToBeFought.RemoveAt(0);
-            if (fadeOutTime != 0)
+            if (fightsYetToBeFought.Count() > 1)
             {
-                ScreenFade.instance.FadeOut(fadeOutTime, true, null);
+                canAddToFughtCounter = true;
+                fightsYetToBeFought.RemoveAt(0);
+                if (fadeOutTime != 0)
+                {
+                    ScreenFade.instance.FadeOut(fadeOutTime, true, null);
+                    ScreenFade.instance.LockFade();
+                }
+                GameSceneManager.LoadSceneFadeOut(fightsYetToBeFought[0].scene, 0.7f);
+                if (PlayerGlobal.instance)
+                {
+                    PlayerGlobal.instance.PauseInput();
+                }
+            }
+            else
+            {
+                ignoreNextFadeIn = false;
+                quitOnNextFade = true;
+                ScreenFade.instance.FadeOut(1.2f, true, null);
                 ScreenFade.instance.LockFade();
             }
-            GameSceneManager.LoadSceneFadeOut(fightsYetToBeFought[0].scene, 0.7f);
-            if (PlayerGlobal.instance)
-            {
-                PlayerGlobal.instance.PauseInput();
-            }
-            //L("Map switch attempted");
+            
         }
 
         [HarmonyPatch(typeof(EnemyWave), "endWave")]
@@ -288,7 +306,7 @@ namespace BossRush
 
         [HarmonyPatch(typeof(TitleScreen), "Start")]
         [HarmonyPrefix]
-        public static void EndActive() { active = false; }
+        public static void EndActive() { active = false; quitOnNextFade = false; ignoreNextFadeIn = false; }
 
         [HarmonyPatch(typeof(Cutscene), "Trigger")]
         [HarmonyPrefix]
