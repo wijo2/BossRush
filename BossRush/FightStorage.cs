@@ -109,6 +109,10 @@ namespace BossRush
             FightName.lod
         };
 
+        public static Dictionary<int, int[]> zeroStats = new Dictionary<int, int[]>() 
+        {
+        };
+
         public static Dictionary<int, int[]> nmgStatPreset = new Dictionary<int, int[]>() //index = fight where you first have stats (starts at 0 cause list)
         {
             {4, new int[] {2,0,0,0} },
@@ -126,15 +130,17 @@ namespace BossRush
             {23, new int[] {5,0,0,0} },
         };
 
-        public static int[] GiveStats(FightName fight)
+        public static Dictionary<int, int[]>[] statDicts = new Dictionary<int, int[]>[] { zeroStats, nmgStatPreset, nmgLowStatPreset };
+
+        public static int[] GiveStats(FightName fight, Dictionary<int, int[]> statDict)
         {
             var c = Array.FindIndex(defaultFightOrder, element => element == fight);
 
             for (var i = c; i >= 0; i--)
             {
-                if (nmgStatPreset.ContainsKey(i))
+                if (statDict.ContainsKey(i))
                 {
-                    return nmgStatPreset[i];
+                    return statDict[i];
                 }
             }
             return new int[] { 0, 0, 0, 0 };

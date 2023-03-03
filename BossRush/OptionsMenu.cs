@@ -22,7 +22,7 @@ namespace BossRush
             new ToggleOption("sword_heavy"),
         };
 
-        public static SelectionGridOption stats = new SelectionGridOption(new string[] { "nmg", "00" }, 1.5f);
+        public static SelectionGridOption stats = new SelectionGridOption(new string[] { "00", "nmg", "nmgLow" }, 1.5f);
 
         public static ToggleOption[] fights;
 

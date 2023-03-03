@@ -101,18 +101,15 @@ namespace BossRush
             GameSave.currentSave.Save();
             GameSave.currentSave.Load();
 
-            if (OptionsMenu.stats.state == 0)
-            {
-                var l = FightStorage.GiveStats(fightsInRun[FightCounter]);
-                Inventory.instance.SetItemCount("stat_melee", l[0]);
-                Inventory.instance.SetItemCount("stat_dexterity", l[1]);
-                Inventory.instance.SetItemCount("stat_haste", l[2]);
-                Inventory.instance.SetItemCount("stat_magic", l[3]);
-                Inventory.instance.AddItem("stat_melee", 0);
-                Inventory.instance.AddItem("stat_dexterity", 0);
-                Inventory.instance.AddItem("stat_haste", 0);
-                Inventory.instance.AddItem("stat_magic", 0);
-            }
+            var l = FightStorage.GiveStats(fightsInRun[FightCounter], FightStorage.statDicts[OptionsMenu.stats.getState()]);
+            Inventory.instance.SetItemCount("stat_melee", l[0]);
+            Inventory.instance.SetItemCount("stat_dexterity", l[1]);
+            Inventory.instance.SetItemCount("stat_haste", l[2]);
+            Inventory.instance.SetItemCount("stat_magic", l[3]);
+            Inventory.instance.AddItem("stat_melee", 0);
+            Inventory.instance.AddItem("stat_dexterity", 0);
+            Inventory.instance.AddItem("stat_haste", 0);
+            Inventory.instance.AddItem("stat_magic", 0);
 
             Inventory.instance.RemoveItem(Inventory.instance.GetItem("sword"));
             var exists = "";
