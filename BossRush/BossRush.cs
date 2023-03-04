@@ -42,7 +42,8 @@ namespace BossRush
 
         public static string debug;
 
-        public static GUIBox.GUIBox gui;
+        public static GUIBox.GUIBox gui1;
+        public static GUIBox.GUIBox gui2;
 
         public void Awake()
         {
@@ -52,7 +53,8 @@ namespace BossRush
             harmony.PatchAll(typeof(BossRush));
 
             OptionsMenu.Init();
-            gui = OptionsMenu.gui;
+            gui1 = OptionsMenu.gui1;
+            gui2 = OptionsMenu.gui2;
         }
 
         public void FixedUpdate()

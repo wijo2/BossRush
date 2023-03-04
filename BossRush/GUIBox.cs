@@ -31,7 +31,7 @@ namespace GUIBox
 
             var size = contents.CalcSize(20, 5);
 
-            GUI.Box(new Rect(new Vector2(topLeftCorner.x - gap, topLeftCorner.y - gap), size + topLeftCorner + new Vector2(gap, gap) * 2), "");
+            GUI.Box(new Rect(new Vector2(topLeftCorner.x - gap, topLeftCorner.y - gap), size + new Vector2(gap * 2, 0)), "");
 
             GUI.color = prevColor;
 
@@ -155,7 +155,7 @@ namespace GUIBox
         public override Vector2 Update(Vector2 startCorner, int fontSize)
         {
             var r = GUIBox.CalcTextSize(text, fontSize);
-            height = r.y * 1.2f;
+            height = r.y;
             width = r.x + r.y;
 
             var rect = new Rect(startCorner.x, startCorner.y, r.y * 0.8f, r.y * 0.8f);
@@ -359,9 +359,11 @@ namespace GUIBox
                 var textRect = new Rect(startCorner.x, startCorner.y, size.x, size.y);
                 GUI.Label(textRect, title);
 
+                //GUI.Box(new Rect(startCorner, GUIBox.CalcTextSize(title, (int)(tmpFontSize * titleMulti))), ""); //debug
+
                 startCorner += new Vector2(0, tmpGap*3 + size.y);
 
-                GUI.skin.label.fontSize =tmpFontSize;
+                GUI.skin.label.fontSize = tmpFontSize;
             }
 
 
@@ -379,6 +381,8 @@ namespace GUIBox
             Vector2 updatingCorner = startCorner;
             foreach (OptionCategory category in subCategories)
             {
+                //GUI.Box(new Rect(updatingCorner, category.CalcSize(fontSize, gap)), ""); //debug
+
                 updatingCorner = category.OnGUI(updatingCorner, gap, fontSize) + new Vector2(0, gap);
             }
             return updatingCorner;
@@ -407,7 +411,7 @@ namespace GUIBox
 
             if (title != "")
             {
-                result = GUIBox.CalcTextSize(title, (int)(tmpFontSize * titleMulti));
+                result = GUIBox.CalcTextSize(title, (int)(tmpFontSize * titleMulti)) + new Vector2(0, gap*3);
             }
 
             if (type == OptionCategoryType.optionHolder)
@@ -419,7 +423,6 @@ namespace GUIBox
                     {
                         result.x = w;
                     }
-
                     result.y += o.GetHeight() + tmpGap;
                 }
             }
@@ -432,7 +435,7 @@ namespace GUIBox
                     {
                         result.x = n.x;
                     }
-                    result.y += n.y;
+                    result.y += n.y + tmpGap;
                 }
             }
 
@@ -466,7 +469,7 @@ namespace GUIBox
 
             if (title != "")
             {
-                result = GUIBox.CalcTextSize(title, (int)(tmpFontSize * titleMulti));
+                result = GUIBox.CalcTextSize(title, (int)(tmpFontSize * titleMulti)) + new Vector2(0, gap * 3);
             }
 
             if (type == OptionCategoryType.optionHolder)

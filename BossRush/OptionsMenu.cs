@@ -8,7 +8,8 @@ namespace BossRush
 {
     public static class OptionsMenu
     {
-        public static GUIBox.GUIBox gui;
+        public static GUIBox.GUIBox gui1;
+        public static GUIBox.GUIBox gui2;
         public static bool hasInit = false;
 
         public static GUIBox.SelectionGridOption styleSelect = new GUIBox.SelectionGridOption(new string[] { "speedrun/practise", "rougelike" });
@@ -31,8 +32,8 @@ namespace BossRush
 
         public static void Init()
         {
-            defAll = new GUIBox.ButtonOption("Select All", 2);
-            defNone = new GUIBox.ButtonOption("Select None", 2);
+            defAll = new GUIBox.ButtonOption("Select All");
+            defNone = new GUIBox.ButtonOption("Select None");
 
             var tempFights = new List<GUIBox.ToggleOption>();
             foreach (var i in FightStorage.defaultFightOrder)
@@ -45,15 +46,17 @@ namespace BossRush
             var style = new GUIBox.OptionCategory("Mode", new GUIBox.BaseOption[] { styleSelect }, titleSizeMultiplier: 1.2f);
 
             //speedrun section
-            var weapon = new GUIBox.OptionCategory("Starting Weapons", weapons, titleSizeMultiplier:1.5f);
+            var weapon = new GUIBox.OptionCategory("Weapons", weapons, titleSizeMultiplier:1.5f);
             var stat = new GUIBox.OptionCategory("Stat Preset", new GUIBox.BaseOption[] { stats }, titleSizeMultiplier: 1.5f);
-            var fight = new GUIBox.OptionCategory("Fights", fights, gapBetweenThings: 1, titleSizeMultiplier: 1.5f);
-            var quickSelect = new GUIBox.HorizontalOptionCategory(options: new GUIBox.BaseOption[] { defAll, defNone });
-            var run = new GUIBox.OptionCategory("Speedrun Options", subCategories: new GUIBox.OptionCategory[] { weapon, stat, fight, quickSelect }, gapBetweenThings: 1, fontSize: 15, titleSizeMultiplier:1.7f);
-
+            var run = new GUIBox.OptionCategory("Speedrun Options", subCategories: new GUIBox.OptionCategory[] { weapon, stat }, gapBetweenThings: 1, fontSize: 15, titleSizeMultiplier:1.7f);
 
             var main = new GUIBox.OptionCategory("Boss Rush Options", subCategories: new GUIBox.OptionCategory[] { style, run });
-            gui = new GUIBox.GUIBox(new UnityEngine.Vector2(20, 20), main, 10);
+            gui1 = new GUIBox.GUIBox(new UnityEngine.Vector2(20, 20), main, 10);
+
+            var quickSelect = new GUIBox.HorizontalOptionCategory(options: new GUIBox.BaseOption[] { defAll, defNone });
+            var fight = new GUIBox.OptionCategory("Included Fights", fights, gapBetweenThings: 1, titleSizeMultiplier: 1.5f);
+            var fightMenu = new GUIBox.OptionCategory(subCategories: new GUIBox.OptionCategory[] { fight, quickSelect });
+            gui2 = new GUIBox.GUIBox(new UnityEngine.Vector2(1150, 20), fightMenu, 10);
 
             hasInit = true;
         }
@@ -64,8 +67,9 @@ namespace BossRush
             {
                 Init();
             }
-            gui.contents.subCategories[1].SetActive(styleSelect.GetState() == 0);
-            gui.OnGUI();
+            gui1.contents.subCategories[1].SetActive(styleSelect.GetState() == 0);
+            gui1.OnGUI();
+            gui2.OnGUI();
 
             if (defAll.IsPressed())
             {
