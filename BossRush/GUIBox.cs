@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using System.Text.RegularExpressions;
 
-namespace BossRush
+namespace GUIBox
 {
     public class GUIBox
     {
@@ -88,7 +88,7 @@ namespace BossRush
         public float? overrideWidth = null;
         public float? overrideHeight = null;
 
-        public ButtonOption(string text, float emptySpaceMultiplier, float? overrideWidth = null, float? overrideHeight = null)
+        public ButtonOption(string text, float emptySpaceMultiplier = 1.5f, float? overrideWidth = null, float? overrideHeight = null)
         {
             width = 0;
             height = 0;
@@ -147,7 +147,7 @@ namespace BossRush
             state = initialState;
         }
 
-        public bool getState()
+        public bool GetState()
         {
             return state;
         }
@@ -197,7 +197,7 @@ namespace BossRush
             this.overrideHeight = overrideHeight;
         }
 
-        public int getState()
+        public int GetState()
         {
             return state;
         }
@@ -254,7 +254,7 @@ namespace BossRush
         public float? overrideHeight = null;
         public float emptySpaceMultiplier;
 
-        public SelectionGridOption(string[] texts, float emptySpaceMultiplier, int initialState = 0, float? overrideWidth = null, float? overrideHeight = null)
+        public SelectionGridOption(string[] texts, float emptySpaceMultiplier = 1.5f, int initialState = 0, float? overrideWidth = null, float? overrideHeight = null)
         {
             this.texts = texts;
             this.emptySpaceMultiplier = emptySpaceMultiplier;
@@ -265,7 +265,7 @@ namespace BossRush
             this.overrideWidth = overrideWidth;
         }
 
-        public int getState()
+        public int GetState()
         {
             return state;
         }
@@ -314,6 +314,7 @@ namespace BossRush
         public float? gap;
         public int? fontSize;
         public float titleMulti;
+        public bool active = true;
 
         /// <summary>
         /// Has to have one and only one of the list parameters given.
@@ -341,6 +342,7 @@ namespace BossRush
 
         public Vector2 OnGUI(Vector2 startCorner, float gap, int fontSize)
         {
+            if (!active) { return startCorner; }
             var tmpFontSize = this.fontSize == null ? fontSize : this.fontSize.Value;
             GUIBox.ChangeFontSize(tmpFontSize);
             var tmpGap = this.gap == null ? gap : this.gap.Value;
@@ -396,6 +398,7 @@ namespace BossRush
 
         public virtual Vector2 CalcSize(int fontSize, float gap) //return vector2 = width, height
         {
+            if (!active) { return Vector2.zero; }
             var tmpFontSize = this.fontSize == null ? fontSize : this.fontSize.Value;
             GUIBox.ChangeFontSize(tmpFontSize);
             var tmpGap = this.gap == null ? gap : this.gap.Value;
@@ -437,8 +440,10 @@ namespace BossRush
             return result;
         }
 
-        
-
+        public void SetActive(bool active)
+        {
+            this.active = active;
+        }
     }
 
     public class HorizontalOptionCategory : OptionCategory

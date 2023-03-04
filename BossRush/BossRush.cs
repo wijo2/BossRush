@@ -42,7 +42,7 @@ namespace BossRush
 
         public static string debug;
 
-        public static GUIBox gui;
+        public static GUIBox.GUIBox gui;
 
         public void Awake()
         {
@@ -101,7 +101,7 @@ namespace BossRush
             GameSave.currentSave.Save();
             GameSave.currentSave.Load();
 
-            var l = FightStorage.GiveStats(fightsInRun[FightCounter], FightStorage.statDicts[OptionsMenu.stats.getState()]);
+            var l = FightStorage.GiveStats(fightsInRun[FightCounter], FightStorage.statDicts[OptionsMenu.stats.GetState()]);
             Inventory.instance.SetItemCount("stat_melee", l[0]);
             Inventory.instance.SetItemCount("stat_dexterity", l[1]);
             Inventory.instance.SetItemCount("stat_haste", l[2]);
@@ -115,7 +115,7 @@ namespace BossRush
             var exists = "";
             foreach (var i in OptionsMenu.weapons)
             {
-                if (i.getState())
+                if (i.GetState())
                 {
                     if (exists == "")
                     {
@@ -286,7 +286,7 @@ namespace BossRush
                 foreach (var fight in OptionsMenu.fights)
                 {
                     FightName k = (FightName)Enum.Parse(typeof(FightName), fight.text);
-                    if (fight.getState())
+                    if (fight.GetState())
                     {
                         newFights.Add(k);
                     }
