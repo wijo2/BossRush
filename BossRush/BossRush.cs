@@ -199,6 +199,7 @@ namespace BossRush
                 if (PlayerGlobal.instance)
                 {
                     PlayerGlobal.instance.PauseInput();
+                    PlayerGlobal.instance.OverrideSafePos(fightsYetToBeFought[0].position);
                 }
             }
             else
