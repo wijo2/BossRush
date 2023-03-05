@@ -40,10 +40,8 @@ namespace BossRush
 
         public static GameSave save;
 
-        public static string debug;
-
-        public static GUIBox.GUIBox gui1;
-        public static GUIBox.GUIBox gui2;
+        public static GUIBox.GUIBox leftgui;
+        public static GUIBox.GUIBox rightgui;
 
         public void Awake()
         {
@@ -53,8 +51,8 @@ namespace BossRush
             harmony.PatchAll(typeof(BossRush));
 
             OptionsMenu.Init();
-            gui1 = OptionsMenu.gui1;
-            gui2 = OptionsMenu.gui2;
+            leftgui = OptionsMenu.leftgui;
+            rightgui = OptionsMenu.rightgui;
         }
 
         public void FixedUpdate()
@@ -113,20 +111,7 @@ namespace BossRush
             Inventory.instance.AddItem("stat_haste", 0);
             Inventory.instance.AddItem("stat_magic", 0);
 
-            Inventory.instance.RemoveItem(Inventory.instance.GetItem("sword"));
-            var exists = "";
-            foreach (var i in OptionsMenu.weapons)
-            {
-                if (i.GetState())
-                {
-                    if (exists == "")
-                    {
-                        exists = i.text;
-                    }
-                    Inventory.instance.SetItemCount(i.text, 1);
-                }
-            }
-            PlayerEquipment.instance.SetRightHandWeapon(exists);
+            OptionsMenu.SetWeapons();
 
             //Inventory.instance.SetItemCount("stat_melee", 9999); //debug buffs
             //Time.timeScale = 6;
@@ -233,7 +218,6 @@ namespace BossRush
             if (!active) { return true; }
             var waveController = __instance.gameObject.GetComponentInParent<EnemyWaveController>();
             var lastWave = ((EnemyWave[])AccessTools.Field(typeof(EnemyWaveController), "waveList").GetValue(waveController)).Last();
-            debug = FightStorage.GeneratePath(__instance);
             if (FightStorage.GeneratePath(__instance) == fightsYetToBeFought[0].goal && lastWave == __instance)
             {
                 LoadNextMap();

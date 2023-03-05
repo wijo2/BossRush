@@ -31,7 +31,7 @@ namespace GUIBox
 
             var size = contents.CalcSize(20, 5);
 
-            GUI.Box(new Rect(new Vector2(topLeftCorner.x - gap, topLeftCorner.y - gap), size + new Vector2(gap * 2, 0)), "");
+            GUI.Box(new Rect(new Vector2(topLeftCorner.x - gap, topLeftCorner.y - gap), size + new Vector2(gap * 2, gap)), "");
 
             GUI.color = prevColor;
 
