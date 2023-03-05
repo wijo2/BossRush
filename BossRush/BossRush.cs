@@ -101,15 +101,29 @@ namespace BossRush
             GameSave.currentSave.Save();
             GameSave.currentSave.Load();
 
-            var l = FightStorage.GiveStats(fightsInRun[FightCounter], FightStorage.statDicts[OptionsMenu.stats.GetState()]);
-            Inventory.instance.SetItemCount("stat_melee", l[0]);
-            Inventory.instance.SetItemCount("stat_dexterity", l[1]);
-            Inventory.instance.SetItemCount("stat_haste", l[2]);
-            Inventory.instance.SetItemCount("stat_magic", l[3]);
-            Inventory.instance.AddItem("stat_melee", 0);
-            Inventory.instance.AddItem("stat_dexterity", 0);
-            Inventory.instance.AddItem("stat_haste", 0);
-            Inventory.instance.AddItem("stat_magic", 0);
+            if (OptionsMenu.styleSelect.GetState() == 0)
+            {
+                var l = FightStorage.GiveStats(fightsInRun[FightCounter], FightStorage.statDicts[OptionsMenu.stats.GetState()]);
+                Inventory.instance.SetItemCount("stat_melee", l[0]);
+                Inventory.instance.SetItemCount("stat_dexterity", l[1]);
+                Inventory.instance.SetItemCount("stat_haste", l[2]);
+                Inventory.instance.SetItemCount("stat_magic", l[3]);
+                Inventory.instance.AddItem("stat_melee", 0);
+                Inventory.instance.AddItem("stat_dexterity", 0);
+                Inventory.instance.AddItem("stat_haste", 0);
+                Inventory.instance.AddItem("stat_magic", 0);
+            }
+            else
+            {
+                Inventory.instance.SetItemCount("stat_melee", 0);
+                Inventory.instance.SetItemCount("stat_dexterity", 0);
+                Inventory.instance.SetItemCount("stat_haste", 0);
+                Inventory.instance.SetItemCount("stat_magic", 0);
+                Inventory.instance.AddItem("stat_melee", 0);
+                Inventory.instance.AddItem("stat_dexterity", 0);
+                Inventory.instance.AddItem("stat_haste", 0);
+                Inventory.instance.AddItem("stat_magic", 0);
+            }
 
             OptionsMenu.SetWeapons();
 
@@ -143,6 +157,7 @@ namespace BossRush
         public static bool ThingDead(DamageableCharacter __instance)
         {
             //L(__instance.gameObject.name + " died :c");
+            if (active && __instance.gameObject.name == "PLAYER" && OptionsMenu.styleSelect.GetState() == 1) { titleTimer = 6f; }
             if (!active || __instance.gameObject.name != fightsYetToBeFought[0].goal) { return true; }
             //L("It's a boss c:");
 
@@ -184,6 +199,13 @@ namespace BossRush
                 PlayerGlobal.instance.SetInvul(999);
                 PlayerGlobal.instance.gameObject.GetComponent<PlayerMovementControl>().SetCanLimitVelocity(true);
                 PlayerGlobal.instance.gameObject.transform.parent.GetComponentInChildren<PlayerAnimation>().EndSlash();
+                if (OptionsMenu.styleSelect.GetState() == 1)
+                {
+                    if ((fightsInRun.Count() - fightsYetToBeFought.Count()) % OptionsMenu.rHealCooldown.GetState() == OptionsMenu.rHealCooldown.GetState() - 1)
+                    {
+                        PlayerGlobal.instance.gameObject.GetComponent<DamageablePlayer>().AddHealth(1);
+                    }
+                }
             }
 
             if (fightsYetToBeFought.Count() > 1)
@@ -209,7 +231,6 @@ namespace BossRush
                 ScreenFade.instance.FadeOut(1.2f, true, null);
                 ScreenFade.instance.LockFade();
             }
-            
         }
 
         [HarmonyPatch(typeof(EnemyWave), "endWave")]

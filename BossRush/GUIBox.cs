@@ -206,13 +206,10 @@ namespace GUIBox
         {
             height = overrideHeight == null ? fontSize * 1.5f : overrideHeight.Value;
 
-            var style = new GUIStyle();
-            style.font = GUI.skin.font;
-            style.fontSize = GUI.skin.label.fontSize;
-            var textRect = new Rect(startCorner.x, startCorner.y, GUIBox.CalcTextSize(" " + text, fontSize).x, height);
+            var textRect = new Rect(startCorner.x, startCorner.y, GUIBox.CalcTextSize(text, fontSize).x, height);
             GUI.Label(textRect, text);
 
-            var fieldRect = new Rect(textRect.x + textRect.width, textRect.y, width, height);
+            var fieldRect = new Rect(textRect.xMax, startCorner.y, width, height);
 
             string newState;
             if (state != 0)

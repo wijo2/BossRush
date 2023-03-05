@@ -36,6 +36,7 @@ namespace BossRush
             "greatsword",
             "umbrella"
         });
+        public static GUIBox.NumberBoxOption rHealCooldown = new GUIBox.NumberBoxOption(50, "Heal 1 hp every x arenas", initialState: 2);
 
         //fight select
         public static GUIBox.ToggleOption[] fights;
@@ -63,9 +64,10 @@ namespace BossRush
             var run = new GUIBox.OptionCategory("Speedrun Options", subCategories: new GUIBox.OptionCategory[] { weapon, stat }, gapBetweenThings: 1, fontSize: 15, titleSizeMultiplier:1.7f);
 
             //roukelike section
-            var swstyle = new GUIBox.OptionCategory("Weapon Style", new GUIBox.BaseOption[] {rWeaponStyle}, titleSizeMultiplier: 1.5f);
+            var wstyle = new GUIBox.OptionCategory("Weapon Style", new GUIBox.BaseOption[] {rWeaponStyle}, titleSizeMultiplier: 1.5f);
             var sweapon = new GUIBox.OptionCategory("Starting Weapon", new GUIBox.BaseOption[] { rStartigWeapon }, titleSizeMultiplier: 1.5f);
-            var rouge = new GUIBox.OptionCategory("Rougelike Options", subCategories: new GUIBox.OptionCategory[] {swstyle, sweapon}, gapBetweenThings: 1, fontSize: 15, titleSizeMultiplier: 1.7f);
+            var heal = new GUIBox.OptionCategory(options: new GUIBox.BaseOption[] { rHealCooldown }, titleSizeMultiplier: 1.5f);
+            var rouge = new GUIBox.OptionCategory("Rougelike Options", subCategories: new GUIBox.OptionCategory[] {wstyle, sweapon, heal}, gapBetweenThings: 1, fontSize: 15, titleSizeMultiplier: 1.7f);
 
             //main
             var main = new GUIBox.OptionCategory("Boss Rush Options", subCategories: new GUIBox.OptionCategory[] { style, run, rouge }, gapBetweenThings: 1, fontSize: 15);
