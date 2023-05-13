@@ -33,8 +33,10 @@ namespace BossRush
 
         public static bool startOnNextLoad = false;
 
-        public static float titleTimer = 0; //timer for autoquit after killing lod
+        public static float titleTimer = 0; //timer for autoquit after finishing last arena
         public static bool quitOnNextFade = false;
+
+        public static bool canLoadNextMap = true; //loadNextMap is called twice sometimes so fix
 
         internal static ManualLogSource Log;
 
@@ -85,6 +87,7 @@ namespace BossRush
         [HarmonyPostfix]
         public static void DoSceneStartThings()
         {
+            canLoadNextMap = true;
             save = GameSave.GetSaveData();
             if (!active || SceneManager.GetActiveScene().name == "TitleScreen") { return; }
 
@@ -194,6 +197,8 @@ namespace BossRush
 
         public static void LoadNextMap(float fadeOutTime = 1f)
         {
+            if (!canLoadNextMap) { return; }
+            canLoadNextMap = false;
             if (PlayerGlobal.instance)
             {
                 PlayerGlobal.instance.SetInvul(999);
@@ -309,6 +314,7 @@ namespace BossRush
                 FightCounter = -1;
 
                 //start!
+                canLoadNextMap = true;
                 LoadNextMap(0);
                 return false;
             }
