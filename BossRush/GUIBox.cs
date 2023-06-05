@@ -13,29 +13,32 @@ namespace GUIBox
         public Vector2 topLeftCorner;
         public OptionCategory contents;
         public float gap;
+        public Vector2 reso;
 
-        public GUIBox(Vector2 topLeftCorner, OptionCategory contents, float boxLeaway = 10f)
+        public GUIBox(Vector2 topLeftCorner, OptionCategory contents, float boxLeaway = 0.01f)
         {
-            this.topLeftCorner = topLeftCorner;
+            this.topLeftCorner = new Vector2(topLeftCorner.x * Screen.width, topLeftCorner.y * Screen.height);
             this.contents = contents;
-            gap = boxLeaway;
+            gap = boxLeaway * Screen.height;
+            reso = new Vector2(Screen.width, Screen.height);
         }
 
         public void OnGUI()
         {
+            if (reso != new Vector2(Screen.width, Screen.height)) { UpdateReso(); }
             var prevClip = GUI.skin.label.clipping;
             GUI.skin.label.clipping = TextClipping.Overflow;
 
             var prevColor = GUI.color;
             GUI.color = Color.gray;
 
-            var size = contents.CalcSize(20, 5);
+            var size = contents.CalcSize(20, 0.002f);
 
-            GUI.Box(new Rect(new Vector2(topLeftCorner.x - gap, topLeftCorner.y - gap), size + new Vector2(gap * 2, gap)), "");
+            GUI.Box(new Rect(new Vector2(topLeftCorner.x - gap, topLeftCorner.y), size + new Vector2(gap * 2, 0)), "");
 
             GUI.color = prevColor;
 
-            contents.OnGUI(topLeftCorner, 5, 20);
+            contents.OnGUI(topLeftCorner, 0.002f, 20);
             GUI.skin.label.clipping = prevClip;
         }
 
@@ -43,12 +46,13 @@ namespace GUIBox
         {
             var style = new GUIStyle();
             style.font = GUI.skin.font;
-            style.fontSize = fontSize;
+            style.fontSize = fontSize * Screen.height / 1080;
             return style.CalcSize(new GUIContent(text));
         }
 
-        public static void ChangeFontSize(int size)
+        public static void ChangeFontSize(float siz)
         {
+            var size = (int)(siz * Screen.height / 1080);
             GUI.skin.button.fontSize = size;
             GUI.skin.label.fontSize = size;
             GUI.skin.scrollView.fontSize = size;
@@ -67,6 +71,13 @@ namespace GUIBox
         {
             GUI.skin.toggle.border = new RectOffset(14, 0, 14, 0);
             GUI.skin.toggle.overflow = new RectOffset(-1, 0, -4, 0);
+        }
+
+        public void UpdateReso()
+        {
+            topLeftCorner = new Vector2(topLeftCorner.x / reso.x * Screen.width, topLeftCorner.y / reso.y * Screen.height);
+            gap = gap / reso.y * Screen.height;
+            reso = new Vector2(Screen.width, Screen.height);
         }
     }
 
@@ -94,8 +105,8 @@ namespace GUIBox
             height = 0;
             this.text = text;
             this.emptySpaceMultiplier = emptySpaceMultiplier;
-            this.overrideWidth = overrideWidth;
-            this.overrideHeight = overrideHeight;
+            this.overrideWidth = overrideWidth * Screen.width;
+            this.overrideHeight = overrideHeight * Screen.height;
         }
 
         public bool IsPressed()
@@ -115,7 +126,7 @@ namespace GUIBox
             height = overrideHeight == null ? r.y * emptySpaceMultiplier : overrideHeight.Value;
 
             var rect = new Rect(startCorner.x, startCorner.y, width, height);
-            if (GUI.Button(rect, text))
+            if (GUI.Button(rect, text, GUI.skin.button))
             {
                 pressed = true;
             }
@@ -161,10 +172,10 @@ namespace GUIBox
             var rect = new Rect(startCorner.x, startCorner.y, r.y * 0.8f, r.y * 0.8f);
 
             GUIBox.EnableToggleResize();
-            state = GUI.Toggle(rect, state, "");
+            state = GUI.Toggle(rect, state, "", GUI.skin.toggle);
             GUIBox.ResetToggleResize();
 
-            var lRect = new Rect(startCorner.x + r.y, startCorner.y - r.y * 0.1f, r.x, height);
+            var lRect = new Rect(startCorner.x + r.y, startCorner.y - r.y * 0.35f, r.x, height);
             GUI.Label(lRect, text);
 
             return new Vector2(width, height);
@@ -191,7 +202,7 @@ namespace GUIBox
         public NumberBoxOption(float width, string text = "", float? overrideHeight = null, int initialState = 0)
         {
             this.text = text;
-            this.width = width;
+            this.width = width * Screen.width;
             height = 0;
             state = initialState;
             this.overrideHeight = overrideHeight;
@@ -206,19 +217,18 @@ namespace GUIBox
         {
             height = overrideHeight == null ? fontSize * 1.5f : overrideHeight.Value;
 
-            var textRect = new Rect(startCorner.x, startCorner.y, GUIBox.CalcTextSize(text, fontSize).x, height);
-            GUI.Label(textRect, text);
+            var textRect = new Rect(startCorner.x, startCorner.y, GUIBox.CalcTextSize(text + "  ", fontSize).x, height);
+            GUI.Label(textRect, text, GUI.skin.label);
 
             var fieldRect = new Rect(textRect.xMax, startCorner.y, width, height);
-
             string newState;
             if (state != 0)
             {
-                newState = Regex.Replace(GUI.TextField(fieldRect, state.ToString()), @"[^0-9 ]", "");
+                newState = Regex.Replace(GUI.TextField(fieldRect, state.ToString(), GUI.skin.textField), @"[^0-9 ]", "");
             }
             else
             {
-                newState = Regex.Replace(GUI.TextField(fieldRect, ""), @"[^0-9 ]", "");
+                newState = Regex.Replace(GUI.TextField(fieldRect, "", GUI.skin.textField), @"[^0-9 ]", "");
             }
             if (newState != "")
             {
@@ -258,8 +268,8 @@ namespace GUIBox
             height = 0;
             state = initialState;
 
-            this.overrideHeight = overrideHeight;
-            this.overrideWidth = overrideWidth;
+            this.overrideWidth = overrideWidth * Screen.width;
+            this.overrideHeight = overrideHeight * Screen.height;
         }
 
         public int GetState()
@@ -285,10 +295,10 @@ namespace GUIBox
             }
 
             width = overrideWidth == null ? biggestX * emptySpaceMultiplier : overrideWidth.Value;
-            height = overrideHeight == null ? biggestY * emptySpaceMultiplier : overrideHeight.Value;
+            height = overrideHeight == null ? biggestY * emptySpaceMultiplier * 1.2f : overrideHeight.Value;
 
             var rect = new Rect(startCorner.x, startCorner.y, width, height * texts.Count());
-            state = GUI.SelectionGrid(rect, state, texts, 1);
+            state = GUI.SelectionGrid(rect, state, texts, 1, GUI.skin.button);
             return new Vector2(width, rect.height);
         }
 
@@ -317,7 +327,7 @@ namespace GUIBox
         /// Has to have one and only one of the list parameters given.
         /// Leaving gap or fontSize to the default value will copy it from the parent category.
         /// </summary>
-        public OptionCategory(string title = "", BaseOption[] options = null, OptionCategory[] subCategories = null, float? gapBetweenThings = null, int? fontSize = null, float titleSizeMultiplier = 2)
+        public OptionCategory(string title = "", BaseOption[] options = null, OptionCategory[] subCategories = null, float? gapBetweenThings = null, int? fontSize = null, float titleSizeMultiplier = 1.5f)
         {
             if (subCategories == null && options == null || (subCategories != null && options != null)) { throw new Exception("OptionCategory has to have one and only one of the list parameters given. Title of category: " + title); }
 
@@ -341,12 +351,11 @@ namespace GUIBox
         {
             if (!active) { return startCorner; }
             var tmpFontSize = this.fontSize == null ? fontSize : this.fontSize.Value;
-            GUIBox.ChangeFontSize(tmpFontSize);
             var tmpGap = this.gap == null ? gap : this.gap.Value;
 
             if (this.title != "")
             {
-                GUI.skin.label.fontSize = (int) (GUI.skin.label.fontSize * titleMulti);
+                GUIBox.ChangeFontSize(tmpFontSize * titleMulti);
 
                 var style = new GUIStyle();
                 style.font = GUI.skin.font;
@@ -358,19 +367,17 @@ namespace GUIBox
 
                 //GUI.Box(new Rect(startCorner, GUIBox.CalcTextSize(title, (int)(tmpFontSize * titleMulti))), ""); //debug
 
-                startCorner += new Vector2(0, tmpGap*3 + size.y);
-
-                GUI.skin.label.fontSize = tmpFontSize;
+                startCorner += new Vector2(0, tmpGap * 3 * Screen.height + size.y);
             }
 
+            GUIBox.ChangeFontSize(tmpFontSize);
 
             if (type == OptionCategoryType.subHolder)
             {
                 return updateSubs(startCorner, tmpGap, tmpFontSize);
             }
 
-            GUIBox.ChangeFontSize(12);
-            return updateOptions(startCorner, tmpGap, tmpFontSize);
+            return updateOptions(startCorner, tmpGap * Screen.height, tmpFontSize);
         }
 
         public virtual Vector2 updateSubs(Vector2 startCorner, float gap, int fontSize)
@@ -380,8 +387,9 @@ namespace GUIBox
             {
                 //GUI.Box(new Rect(updatingCorner, category.CalcSize(fontSize, gap)), ""); //debug
 
-                updatingCorner = category.OnGUI(updatingCorner, gap, fontSize) + new Vector2(0, gap);
+                updatingCorner = category.OnGUI(updatingCorner, gap, fontSize) + new Vector2(0, gap * Screen.height);
             }
+            GUIBox.ChangeFontSize(12);
             return updatingCorner;
         }
 
@@ -394,6 +402,7 @@ namespace GUIBox
                 size = option.Update(updatingCorner, fontSize);
                 updatingCorner += new Vector2(0, size.y + gap);
             }
+            GUIBox.ChangeFontSize(12);
             return updatingCorner;
         }
 
@@ -408,7 +417,7 @@ namespace GUIBox
 
             if (title != "")
             {
-                result = GUIBox.CalcTextSize(title, (int)(tmpFontSize * titleMulti)) + new Vector2(0, gap*3);
+                result = GUIBox.CalcTextSize(title, (int)(tmpFontSize * titleMulti)) + new Vector2(0, tmpGap * 3 * Screen.height);
             }
 
             if (type == OptionCategoryType.optionHolder)
@@ -420,7 +429,7 @@ namespace GUIBox
                     {
                         result.x = w;
                     }
-                    result.y += o.GetHeight() + tmpGap;
+                    result.y += o.GetHeight() + tmpGap * Screen.height;
                 }
             }
             if (type == OptionCategoryType.subHolder)
@@ -432,7 +441,7 @@ namespace GUIBox
                     {
                         result.x = n.x;
                     }
-                    result.y += n.y + tmpGap;
+                    result.y += n.y + tmpGap * Screen.height;
                 }
             }
 
@@ -452,7 +461,7 @@ namespace GUIBox
         /// Has to have one and only one of the list parameters given.
         /// Leaving gap or fontSize to the default value will copy it from the parent category.
         /// </summary>
-        public HorizontalOptionCategory(string title = "", BaseOption[] options = null, OptionCategory[] subCategories = null, float? gapBetweenThings = null, int? fontSize = null, float titleSizeMultiplier = 2) : base (title, options, subCategories, gapBetweenThings, fontSize, titleSizeMultiplier)
+        public HorizontalOptionCategory(string title = "", BaseOption[] options = null, OptionCategory[] subCategories = null, float? gapBetweenThings = null, int? fontSize = null, float titleSizeMultiplier = 1.5f) : base (title, options, subCategories, gapBetweenThings, fontSize, titleSizeMultiplier)
         {
         }
 
@@ -466,7 +475,7 @@ namespace GUIBox
 
             if (title != "")
             {
-                result = GUIBox.CalcTextSize(title, (int)(tmpFontSize * titleMulti)) + new Vector2(0, gap * 3);
+                result = GUIBox.CalcTextSize(title, (int)(tmpFontSize * titleMulti)) + new Vector2(0, gap * 3 * Screen.width);
             }
 
             if (type == OptionCategoryType.optionHolder)
@@ -478,7 +487,7 @@ namespace GUIBox
                         result.y = o.GetHeight();
                     }
 
-                    result.x += o.GetWidth() + gap;
+                    result.x += o.GetWidth() + tmpGap * Screen.width;
                 }
             }
             if (type == OptionCategoryType.subHolder)
@@ -516,8 +525,8 @@ namespace GUIBox
             Vector2 size;
             foreach (BaseOption option in options)
             {
-                size = option.Update(updatingCorner, fontSize) + new Vector2(0, gap);
-                updatingCorner += new Vector2(size.x + gap, 0);
+                size = option.Update(updatingCorner, fontSize);
+                updatingCorner += new Vector2(size.x + gap * Screen.width, 0);
             }
             return updatingCorner;
         }

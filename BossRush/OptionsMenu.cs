@@ -13,7 +13,7 @@ namespace BossRush
         public static bool hasInit = false;
 
         //style
-        public static GUIBox.SelectionGridOption styleSelect = new GUIBox.SelectionGridOption(new string[] { "speedrun/practise", "rougelike" }, overrideWidth: 150);
+        public static GUIBox.SelectionGridOption styleSelect = new GUIBox.SelectionGridOption(new string[] { "speedrun/practise", "rougelike" });
 
         //speedrun select
         public static GUIBox.ToggleOption[] sWeapons = new GUIBox.ToggleOption[]
@@ -24,7 +24,7 @@ namespace BossRush
             new GUIBox.ToggleOption("greatsword"),
             new GUIBox.ToggleOption("umbrella")
         };
-        public static GUIBox.SelectionGridOption stats = new GUIBox.SelectionGridOption(new string[] { "00", "nmg", "nmgLow" }, 1.5f);
+        public static GUIBox.SelectionGridOption stats = new GUIBox.SelectionGridOption(new string[] { "00", "nmg", "nmgLow" });
 
         //rouglike select
         public static GUIBox.SelectionGridOption rWeaponStyle = new GUIBox.SelectionGridOption(new string[] { "Random Weapon", "Unlock Weapons (wip)" });
@@ -36,7 +36,7 @@ namespace BossRush
             "greatsword",
             "umbrella"
         });
-        public static GUIBox.NumberBoxOption rHealCooldown = new GUIBox.NumberBoxOption(50, "Heal 1 hp every x arenas", initialState: 2);
+        public static GUIBox.NumberBoxOption rHealCooldown = new GUIBox.NumberBoxOption(0.04f, "Heal 1 hp every x arenas", initialState: 2);
 
         //fight select
         public static GUIBox.ToggleOption[] fights;
@@ -59,25 +59,25 @@ namespace BossRush
             var style = new GUIBox.OptionCategory("Mode", new GUIBox.BaseOption[] { styleSelect }, titleSizeMultiplier: 1.2f);
 
             //speedrun section
-            var weapon = new GUIBox.OptionCategory("Weapons", sWeapons, titleSizeMultiplier:1.5f);
-            var stat = new GUIBox.OptionCategory("Stat Preset", new GUIBox.BaseOption[] { stats }, titleSizeMultiplier: 1.5f);
-            var run = new GUIBox.OptionCategory("Speedrun Options", subCategories: new GUIBox.OptionCategory[] { weapon, stat }, gapBetweenThings: 1, fontSize: 15, titleSizeMultiplier:1.7f);
+            var weapon = new GUIBox.OptionCategory("Weapons", sWeapons);
+            var stat = new GUIBox.OptionCategory("Stat Preset", new GUIBox.BaseOption[] { stats });
+            var run = new GUIBox.OptionCategory("Speedrun Options", subCategories: new GUIBox.OptionCategory[] { weapon, stat }, titleSizeMultiplier:1.7f);
 
             //roukelike section
-            var wstyle = new GUIBox.OptionCategory("Weapon Style", new GUIBox.BaseOption[] {rWeaponStyle}, titleSizeMultiplier: 1.5f);
-            var sweapon = new GUIBox.OptionCategory("Starting Weapon", new GUIBox.BaseOption[] { rStartigWeapon }, titleSizeMultiplier: 1.5f);
-            var heal = new GUIBox.OptionCategory(options: new GUIBox.BaseOption[] { rHealCooldown }, titleSizeMultiplier: 1.5f);
-            var rouge = new GUIBox.OptionCategory("Rougelike Options", subCategories: new GUIBox.OptionCategory[] {wstyle, sweapon, heal}, gapBetweenThings: 1, fontSize: 15, titleSizeMultiplier: 1.7f);
+            var wstyle = new GUIBox.OptionCategory("Weapon Style", new GUIBox.BaseOption[] {rWeaponStyle});
+            var sweapon = new GUIBox.OptionCategory("Starting Weapon", new GUIBox.BaseOption[] { rStartigWeapon });
+            var heal = new GUIBox.OptionCategory(options: new GUIBox.BaseOption[] { rHealCooldown });
+            var rouge = new GUIBox.OptionCategory("Rougelike Options", subCategories: new GUIBox.OptionCategory[] {wstyle, sweapon, heal}, titleSizeMultiplier: 1.7f);
 
             //main
-            var main = new GUIBox.OptionCategory("Boss Rush Options", subCategories: new GUIBox.OptionCategory[] { style, run, rouge }, gapBetweenThings: 1, fontSize: 15);
-            leftgui = new GUIBox.GUIBox(new UnityEngine.Vector2(20, 20), main, 10);
+            var main = new GUIBox.OptionCategory("Boss Rush Options", subCategories: new GUIBox.OptionCategory[] { style, run, rouge });
+            leftgui = new GUIBox.GUIBox(new UnityEngine.Vector2(0.01f, 0.01f), main);
 
             //fight select
             var quickSelect = new GUIBox.HorizontalOptionCategory(options: new GUIBox.BaseOption[] { defAll, defNone });
-            var fight = new GUIBox.OptionCategory("Included Fights", fights, gapBetweenThings: 1, titleSizeMultiplier: 1.5f);
+            var fight = new GUIBox.OptionCategory("Included Fights", fights);
             var fightMenu = new GUIBox.OptionCategory(subCategories: new GUIBox.OptionCategory[] { fight, quickSelect });
-            rightgui = new GUIBox.GUIBox(new UnityEngine.Vector2(1285, 20), fightMenu, 10);
+            rightgui = new GUIBox.GUIBox(new UnityEngine.Vector2(0.8f, 0.01f), fightMenu);
 
             hasInit = true;
         }
