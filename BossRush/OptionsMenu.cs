@@ -36,7 +36,7 @@ namespace BossRush
             "greatsword",
             "umbrella"
         });
-        public static GUIBox.NumberBoxOption rHealCooldown = new GUIBox.NumberBoxOption(0.04f, "Heal 1 hp every x arenas", initialState: 2);
+        public static GUIBox.NumberFieldOption rHealCooldown = new GUIBox.NumberFieldOption(0.04f, "Heal 1 hp every x arenas", initialState: 2);
 
         //fight select
         public static GUIBox.ToggleOption[] fights;

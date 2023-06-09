@@ -150,7 +150,7 @@ namespace GUIBox
         public float height;
         public string text;
 
-        public ToggleOption(string text, bool initialState = false) 
+        public ToggleOption(string text, bool initialState = false)
         {
             this.text = text;
             width = 0;
@@ -192,20 +192,65 @@ namespace GUIBox
         }
     }
 
-    public class NumberBoxOption : BaseOption
+    public class TextFieldOption : BaseOption
+    {
+        public string state;
+        public float height;
+        public string text;
+        public float? overrideHeight = null;
+
+        public TextFieldOption(float width, string text = "", float? overrideHeight = null, string initialState = "")
+        {
+            this.text = text;
+            this.width = width * Screen.width;
+            height = 0;
+            state = initialState;
+            this.overrideHeight = overrideHeight * Screen.height;
+        }
+
+        public string GetState()
+        {
+            return state;
+        }
+
+        public override Vector2 Update(Vector2 startCorner, int fontSize)
+        {
+            height = overrideHeight == null ? fontSize * 1.5f : overrideHeight.Value;
+
+            var textRect = new Rect(startCorner.x, startCorner.y, GUIBox.CalcTextSize(text + "  ", fontSize).x, height);
+            GUI.Label(textRect, text, GUI.skin.label);
+
+            var fieldRect = new Rect(textRect.xMax, startCorner.y, width, height);
+            state = GUI.TextField(fieldRect, state, GUI.skin.textField);
+
+            return new Vector2(width, height);
+        }
+
+        public override float GetHeight()
+        {
+            return height;
+        }
+
+        public override float GetWidth()
+        {
+            return width;
+        }
+    }
+
+    public class NumberFieldOption : BaseOption
     {
         public int state;
         public float height;
         public string text;
         public float? overrideHeight = null;
 
-        public NumberBoxOption(float width, string text = "", float? overrideHeight = null, int initialState = 0)
+        public NumberFieldOption(float width, string text = "", float? overrideHeight = null, int initialState = 0)
         {
             this.text = text;
             this.width = width * Screen.width;
             height = 0;
             state = initialState;
-            this.overrideHeight = overrideHeight;
+            this.overrideHeight = overrideHeight * Screen.height;
         }
 
         public int GetState()
@@ -333,7 +378,7 @@ namespace GUIBox
 
             if (subCategories == null)
             {
-                type = OptionCategoryType.optionHolder;          
+                type = OptionCategoryType.optionHolder;
             }
             else
             {
@@ -461,7 +506,7 @@ namespace GUIBox
         /// Has to have one and only one of the list parameters given.
         /// Leaving gap or fontSize to the default value will copy it from the parent category.
         /// </summary>
-        public HorizontalOptionCategory(string title = "", BaseOption[] options = null, OptionCategory[] subCategories = null, float? gapBetweenThings = null, int? fontSize = null, float titleSizeMultiplier = 1.5f) : base (title, options, subCategories, gapBetweenThings, fontSize, titleSizeMultiplier)
+        public HorizontalOptionCategory(string title = "", BaseOption[] options = null, OptionCategory[] subCategories = null, float? gapBetweenThings = null, int? fontSize = null, float titleSizeMultiplier = 1.5f) : base(title, options, subCategories, gapBetweenThings, fontSize, titleSizeMultiplier)
         {
         }
 

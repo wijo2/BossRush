@@ -35,6 +35,7 @@
     <Compile Include="BossRush.cs" />
     <Compile Include="FightStorage.cs" />
     <Compile Include="GUIBox.cs" />
+    <Compile Include="GUI\UpgradeMenu.cs" />
     <Compile Include="OptionsMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
