@@ -34,12 +34,13 @@ namespace GUIBox
 
             var size = contents.CalcSize(20, 0.002f);
 
-            GUI.Box(new Rect(new Vector2(topLeftCorner.x - gap, topLeftCorner.y), size + new Vector2(gap * 2, 0)), "");
+            GUI.Box(new Rect(new Vector2(topLeftCorner.x - gap, topLeftCorner.y - gap), size + new Vector2(gap * 2, gap * 2)), "");
 
             GUI.color = prevColor;
 
             contents.OnGUI(topLeftCorner, 0.002f, 20);
             GUI.skin.label.clipping = prevClip;
+            GUIBox.ChangeFontSize(12);
         }
 
         public static Vector2 CalcTextSize(string text, int fontSize)
@@ -149,13 +150,15 @@ namespace GUIBox
         public bool state;
         public float height;
         public string text;
+        public bool button;
 
-        public ToggleOption(string text, bool initialState = false)
+        public ToggleOption(string text, bool initialState = false, bool isButton = false)
         {
             this.text = text;
             width = 0;
             height = 0;
             state = initialState;
+            button = isButton; //looks like button instead of the default checkbox
         }
 
         public bool GetState()
@@ -165,20 +168,35 @@ namespace GUIBox
 
         public override Vector2 Update(Vector2 startCorner, int fontSize)
         {
-            var r = GUIBox.CalcTextSize(text, fontSize);
-            height = r.y;
-            width = r.x + r.y;
+            if (!button)
+            {
+                var r = GUIBox.CalcTextSize(text, fontSize);
+                height = r.y;
+                width = r.x + r.y;
 
-            var rect = new Rect(startCorner.x, startCorner.y, r.y * 0.8f, r.y * 0.8f);
+                var rect = new Rect(startCorner.x, startCorner.y, r.y * 0.8f, r.y * 0.8f);
 
-            GUIBox.EnableToggleResize();
-            state = GUI.Toggle(rect, state, "", GUI.skin.toggle);
-            GUIBox.ResetToggleResize();
+                GUIBox.EnableToggleResize();
+                state = GUI.Toggle(rect, state, "", GUI.skin.toggle);
+                GUIBox.ResetToggleResize();
 
-            var lRect = new Rect(startCorner.x + r.y, startCorner.y - r.y * 0.35f, r.x, height);
-            GUI.Label(lRect, text);
+                var lRect = new Rect(startCorner.x + r.y, startCorner.y - r.y * 0.35f, r.x, height);
+                GUI.Label(lRect, text);
 
-            return new Vector2(width, height);
+                return new Vector2(width, height);
+            }
+            else
+            {
+                var r = GUIBox.CalcTextSize(text, fontSize);
+                height = r.y;
+                width = r.x;
+
+                var rect = new Rect(startCorner.x, startCorner.y, width, r.y);
+
+                state = GUI.Toggle(rect, state, text, "Button");
+
+                return new Vector2(width, height);
+            }
         }
 
         public override float GetHeight()
@@ -368,6 +386,8 @@ namespace GUIBox
         public float titleMulti;
         public bool active = true;
 
+        public static bool debugBoxes = false;
+
         /// <summary>
         /// Has to have one and only one of the list parameters given.
         /// Leaving gap or fontSize to the default value will copy it from the parent category.
@@ -410,7 +430,7 @@ namespace GUIBox
                 var textRect = new Rect(startCorner.x, startCorner.y, size.x, size.y);
                 GUI.Label(textRect, title);
 
-                //GUI.Box(new Rect(startCorner, GUIBox.CalcTextSize(title, (int)(tmpFontSize * titleMulti))), ""); //debug
+                if (debugBoxes) { GUI.Box(new Rect(startCorner, GUIBox.CalcTextSize(title, (int)(tmpFontSize * titleMulti))), ""); } //debug
 
                 startCorner += new Vector2(0, tmpGap * 3 * Screen.height + size.y);
             }
@@ -430,7 +450,7 @@ namespace GUIBox
             Vector2 updatingCorner = startCorner;
             foreach (OptionCategory category in subCategories)
             {
-                //GUI.Box(new Rect(updatingCorner, category.CalcSize(fontSize, gap)), ""); //debug
+                if (debugBoxes) { GUI.Box(new Rect(updatingCorner, category.CalcSize(fontSize, gap)), ""); } //debug
 
                 updatingCorner = category.OnGUI(updatingCorner, gap, fontSize) + new Vector2(0, gap * Screen.height);
             }
@@ -558,8 +578,11 @@ namespace GUIBox
             Vector2 size;
             foreach (OptionCategory category in subCategories)
             {
-                size = category.OnGUI(updatingCorner, gap, fontSize);
-                updatingCorner += new Vector2(size.x, 0);
+                if (debugBoxes) { GUI.Box(new Rect(updatingCorner, category.CalcSize(fontSize, gap)), ""); } //debug
+
+                category.OnGUI(updatingCorner, gap, fontSize);
+                size = category.CalcSize(fontSize, gap);
+                updatingCorner += new Vector2(size.x + gap * Screen.width, 0);
             }
             return updatingCorner;
         }
