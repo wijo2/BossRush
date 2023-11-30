@@ -20,6 +20,7 @@ namespace BossRush
             {FightName.grandma, new FightData("boss_Grandma", new Vector3(-1062f, -32f, 909f), "grandma") },
             {FightName.gc, new FightData("OldCrowVoid", new Vector3(0f, 1f, 0f), "old_crow_boss_fbx") },
             {FightName.lod, new FightData("lvl_HallOfDoors_BOSSFIGHT", new Vector3(-556f, 499f, -45.5f), "BOSS_lord_of_doors NEW") },
+            {FightName.steadhone, new FightData("lvl_Graveyard", new Vector3(21.9f, 56.64f, 411.6f), "BOSS_GraveDigger") },
 
             //arenas
 
@@ -86,7 +87,8 @@ namespace BossRush
             FightName.frog,
             FightName.grandma,
             FightName.gc,
-            FightName.lod
+            FightName.lod,
+            FightName.steadhone
         };
 
         public static FightName[] speedrunPresetFights = new FightName[]
@@ -182,6 +184,7 @@ namespace BossRush
         grandma,
         gc,
         lod,
+        steadhone,
         graveyard_1,
         graveyard_2,
         manor_crow_1,

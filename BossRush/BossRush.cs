@@ -21,7 +21,7 @@ namespace BossRush
 
         public static bool active = false; //is the mod active in current playing session
 
-        public static String[] flags = new string[] { "tut_firstintro", "fomo_intro", "graveyard_westknight", "redeemer_cutscene_watched", "crowboss_intro_watched", "yetiboss_cutscene_watched", "grandma_fight_intro_seen", "grandma_boss_intro_watched", "frog_ghoul_intro", "frog_boss_intro_seen", "frogboss_cutscene_watched", "lod_gauntlet_intro1", "lod_gauntlet_intro2", "lod_gauntlet_intro3", "lod_gauntlet_intro4", "lod_gauntlet_intro5", "lod_gauntlet_intro_done", "lod_demon1", "lod_demon2", "lod_demon3", "lod_demon4", "finallod_intro" };
+        public static String[] flags = new string[] { "tut_firstintro", "fomo_intro", "graveyard_westknight", "redeemer_cutscene_watched", "crowboss_intro_watched", "yetiboss_cutscene_watched", "grandma_fight_intro_seen", "grandma_boss_intro_watched", "frog_ghoul_intro", "frog_boss_intro_seen", "frogboss_cutscene_watched", "lod_gauntlet_intro1", "lod_gauntlet_intro2", "lod_gauntlet_intro3", "lod_gauntlet_intro4", "lod_gauntlet_intro5", "lod_gauntlet_intro_done", "lod_demon1", "lod_demon2", "lod_demon3", "lod_demon4", "finallod_intro", "gd_fight_intro" };
 
         public static List<FightData> fightsYetToBeFought = new List<FightData>();
         public static List<FightName> fightsInRun = new List<FightName>();
@@ -73,12 +73,14 @@ namespace BossRush
 
         public static void SQ()
         {
+            Log.LogWarning("sq try");
             PlayerGlobal.instance.UnPauseInput();
             UIMenuPauseController.instance.Pause();
             var o = Resources.FindObjectsOfTypeAll<UIMenuOptions>()[0];
             o.gameObject.SetActive(true);
             o.ExitSession();
             o.ClosePrompt_ExitToMenu(true);
+            Log.LogWarning("sq finished");
         }
 
         public static void L(string text) { Log.LogWarning(text); } //debugging c:
@@ -186,7 +188,24 @@ namespace BossRush
                     LoadNextMap();
                     break;
                 case "BOSS_lord_of_doors NEW":
-                    titleTimer = 2;
+                    if (fightsYetToBeFought.Count == 1)
+                    {
+                        titleTimer = 2;
+                    }
+                    else
+                    {
+                        LoadNextMap();
+                    }
+                    break;
+                case "BOSS_GraveDigger":
+                    if (fightsYetToBeFought.Count == 1)
+                    {
+                        titleTimer = 2;
+                    }
+                    else
+                    {
+                        LoadNextMap();
+                    }
                     break;
                 default:
                     Log.LogWarning("Couldn't identify boss");
@@ -333,7 +352,7 @@ namespace BossRush
         [HarmonyPrefix]
         public static bool stopLODCut()
         {
-            if (!(SceneManager.GetActiveScene().name == "lvl_HallOfDoors_BOSSFIGHT") || !active) { return true; }
+            if (!(SceneManager.GetActiveScene().name == "lvl_HallOfDoors_BOSSFIGHT" || fightsYetToBeFought[0].goal == "BOSS_GraveDigger") || !active) { return true; }
             PlayerGlobal.instance.PauseInput();
             UI_Control.HideUI();
             return false;
