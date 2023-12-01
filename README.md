@@ -1,0 +1,1 @@
+The usage of the mod is fairly self-explanatory but one note that needs to be said is that to start in rush mode you need to boot file 3. If not, the mod doesn't (or at least shouldn't) have any effect. Have fun!

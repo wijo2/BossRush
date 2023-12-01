@@ -57,6 +57,7 @@ namespace BossRush
             {FightName.ava1, new FightData("AVARICE_WAVES_Mansion", new Vector3(0, 1, 5), "Room_Main/_CONTENTS/EmptyWaveBattle/WaveControl") },
             {FightName.ava2, new FightData("AVARICE_WAVES_Forest", new Vector3(0, 1, 12.24f), "Room_Main/_CONTENTS/EmptyWaveBattle/WaveControl") },
             {FightName.ava3, new FightData("AVARICE_WAVES_Fortress", new Vector3(0, 1, 5), "Room_Main/_CONTENTS/EmptyWaveBattle/WaveControl") },
+            {FightName.ava4, new FightData("AVARICE_WAVES_Secret", new Vector3(0, 1, 5), "Room_Main/_CONTENTS/EmptyWaveBattle/WaveControl") },
         };
 
         public static FightName[] defaultFightOrder = new FightName[] 
@@ -88,7 +89,8 @@ namespace BossRush
             FightName.grandma,
             FightName.gc,
             FightName.lod,
-            FightName.steadhone
+            FightName.ava4,
+            FightName.steadhone,
         };
 
         public static FightName[] speedrunPresetFights = new FightName[]
@@ -204,6 +206,7 @@ namespace BossRush
         ice_arena,
         ava1,
         ava2,
-        ava3
+        ava3,
+        ava4
     }
 }

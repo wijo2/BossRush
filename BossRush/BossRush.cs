@@ -148,7 +148,7 @@ namespace BossRush
 
             save.SetSpawnPoint(SceneManager.GetActiveScene().name, null);
 
-            if (new string[] { "AVARICE_WAVES_Mansion", "AVARICE_WAVES_Forest", "AVARICE_WAVES_Fortress" }.Contains(SceneManager.GetActiveScene().name))
+            if (new string[] { "AVARICE_WAVES_Mansion", "AVARICE_WAVES_Forest", "AVARICE_WAVES_Fortress", "AVARICE_WAVES_Secret"}.Contains(SceneManager.GetActiveScene().name))
             {
                 var c = GameObject.Find("IntroCutscene").GetComponent<Cutscene>();
                 c.Trigger();
