@@ -21,6 +21,7 @@ namespace BossRush
         private const string pluginVersion = "0.0.3";
 
         private const string activeKey = "BossRush-active";
+        private const string modeName = "START BOSS RUSH";
 
         public static bool active = false; //is the mod active in current playing session
 
@@ -59,7 +60,7 @@ namespace BossRush
             leftgui = OptionsMenu.leftgui;
             rightgui = OptionsMenu.rightgui;
 
-            AlternativeGameModes.Add("START BOSS RUSH", () =>
+            AlternativeGameModes.Add(modeName, () =>
             {
                 GameSave.currentSave.SetKeyState(activeKey, true);
                 GameSave.currentSave.SetKeyState("cts_bus", true);
@@ -383,7 +384,7 @@ namespace BossRush
 
         public void OnGUI()
         {
-            if (TitleScreen.instance && TitleScreen.instance.saveMenu.HasControl())
+            if (TitleScreen.instance && TitleScreen.instance.saveMenu.HasControl() && AlternativeGameModes.SelectedModeName == modeName)
             {
                 OptionsMenu.OnGUI();
             }
