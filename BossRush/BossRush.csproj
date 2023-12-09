@@ -85,6 +85,9 @@
       <HintPath>Deps\UnityEngine.TextRenderingModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="AlternativeGameModes">
+      <HintPath>Deps\AlternativeGameModes.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

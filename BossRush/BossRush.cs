@@ -9,6 +9,7 @@ using BepInEx.Logging;
 using HarmonyLib;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DDoor.AlternativeGameModes;
 
 namespace BossRush
 {
@@ -18,6 +19,9 @@ namespace BossRush
         private const string pluginGuid = "ddoor.BossRush.wijo";
         private const string pluginName = "BossRush";
         private const string pluginVersion = "0.0.3";
+
+        private const string activeKey = "BossRush-active";
+        private const string modeName = "START BOSS RUSH";
 
         public static bool active = false; //is the mod active in current playing session
 
@@ -55,6 +59,12 @@ namespace BossRush
             OptionsMenu.Init();
             leftgui = OptionsMenu.leftgui;
             rightgui = OptionsMenu.rightgui;
+
+            AlternativeGameModes.Add(modeName, () =>
+            {
+                GameSave.currentSave.SetKeyState(activeKey, true);
+                GameSave.currentSave.SetKeyState("cts_bus", true);
+            });
         }
 
         public void FixedUpdate()
@@ -280,15 +290,16 @@ namespace BossRush
         [HarmonyPrefix]
         public static bool FadeInDecimator5000() { if (ignoreNextFadeIn && !active) { ignoreNextFadeIn = false; return false; } return true; }
 
-        [HarmonyPatch(typeof(SaveSlot), "LoadSave")]
-        [HarmonyPrefix]
+
+
+        [HarmonyPatch(typeof(SaveSlot), "useSaveFile")]
+        [HarmonyPostfix]
         public static void PotentialStart(SaveSlot __instance, GameSave ___saveFile)
         {
-            if (__instance.saveId == "slot3")
+            if (___saveFile.IsKeyUnlocked(activeKey))
             {
-                startOnNextLoad = true;
                 active = true;
-                ___saveFile.SetKeyState("cts_bus", true, true);
+                startOnNextLoad = true;
             }
         }
 
@@ -373,7 +384,7 @@ namespace BossRush
 
         public void OnGUI()
         {
-            if (TitleScreen.instance && TitleScreen.instance.saveMenu.HasControl())
+            if (TitleScreen.instance && TitleScreen.instance.saveMenu.HasControl() && AlternativeGameModes.SelectedModeName == modeName)
             {
                 OptionsMenu.OnGUI();
             }
