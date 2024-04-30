@@ -120,7 +120,7 @@ namespace BossRush
         public static Dictionary<int, int[]> nmgStatPreset = new Dictionary<int, int[]>() //index = fight where you first have stats (starts at 0 cause list)
         {
             {4, new int[] {2,0,0,0} },
-            {8, new int[] {3,0,0,0} },
+            {7, new int[] {3,0,0,0} },
             {12, new int[] {4,0,0,0} },
             {21, new int[] {5,1,0,0} },
             {23, new int[] {5,2,0,0} }
