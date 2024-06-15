@@ -1,6 +1,1 @@
-To enable boss rush mode, select an empty save slot, then press left or right until
-the START button reads "START BOSS RUSH". An options menu will also appear then.
-
-This mod requires [AlternativeGameModes][] to be also installed.
-
-[AlternativeGameModes]: https://github.com/dpinela/DeathsDoor.AlternativeGameModes
+The mod will be activated upon launching save slot 3. Please be aware that the save in that slot will be all kinds of messed up after this.
