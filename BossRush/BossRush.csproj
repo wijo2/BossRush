@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BossRush</RootNamespace>
     <AssemblyName>BossRush</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -84,9 +84,6 @@
     <Reference Include="UnityEngine.TextRenderingModule">
       <HintPath>Deps\UnityEngine.TextRenderingModule.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="AlternativeGameModes">
-      <HintPath>Deps\AlternativeGameModes.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
