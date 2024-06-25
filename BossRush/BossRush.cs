@@ -103,6 +103,9 @@ namespace BossRush
             ws.UnlockBombs();
             ws.UnlockFire();
             ws.UnlockHooskhot();
+            OptionsMenu.SetUpgrades();
+            AccessTools.Method("WeaponSwitcher:checkUnlocks").Invoke(ws, new object[] {});
+
             GameSave.currentSave.Save();
             GameSave.currentSave.Load();
 

@@ -24,6 +24,15 @@ namespace BossRush
             new GUIBox.ToggleOption("greatsword"),
             new GUIBox.ToggleOption("umbrella")
         };
+
+        public static GUIBox.ToggleOption[] sUpgrades = new GUIBox.ToggleOption[]
+        {
+            new GUIBox.ToggleOption("arrows"),
+            new GUIBox.ToggleOption("fire"),
+            new GUIBox.ToggleOption("bombs"),
+            new GUIBox.ToggleOption("hookshot"),
+        };
+
         public static GUIBox.SelectionGridOption stats = new GUIBox.SelectionGridOption(new string[] { "00", "nmg", "nmgLow" });
 
         //rouglike select
@@ -60,8 +69,9 @@ namespace BossRush
 
             //speedrun section
             var weapon = new GUIBox.OptionCategory("Weapons", sWeapons);
+            var upgrades = new GUIBox.OptionCategory("Upgrades", sUpgrades);
             var stat = new GUIBox.OptionCategory("Stat Preset", new GUIBox.BaseOption[] { stats });
-            var run = new GUIBox.OptionCategory("Speedrun Options", subCategories: new GUIBox.OptionCategory[] { weapon, stat }, titleSizeMultiplier:1.7f);
+            var run = new GUIBox.OptionCategory("Speedrun Options", subCategories: new GUIBox.OptionCategory[] { weapon, upgrades, stat }, titleSizeMultiplier:1.7f);
 
             //roukelike section
             var wstyle = new GUIBox.OptionCategory("Weapon Style", new GUIBox.BaseOption[] {rWeaponStyle});
@@ -147,7 +157,15 @@ namespace BossRush
             }
         }
 
-        public static string GetWeaponName(string name)
+        public static void SetUpgrades()
+        {
+            GameSave.GetSaveData().SetKeyState("upgraded_arrows", sUpgrades[0].GetState());
+            GameSave.GetSaveData().SetKeyState("upgraded_fire", sUpgrades[1].GetState());
+            GameSave.GetSaveData().SetKeyState("upgraded_bombs", sUpgrades[2].GetState());
+            GameSave.GetSaveData().SetKeyState("upgraded_hookshot", sUpgrades[3].GetState());
+        }
+
+    public static string GetWeaponName(string name)
         {
             switch (name)
             {
