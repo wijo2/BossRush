@@ -17,7 +17,7 @@ namespace BossRush
     {
         private const string pluginGuid = "ddoor.BossRush.wijo";
         private const string pluginName = "BossRush";
-        private const string pluginVersion = "0.5";
+        private const string pluginVersion = "0.6";
 
         public static bool active = false; //is the mod active in current playing session
 

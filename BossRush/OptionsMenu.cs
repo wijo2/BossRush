@@ -165,7 +165,7 @@ namespace BossRush
             GameSave.GetSaveData().SetKeyState("upgraded_hookshot", sUpgrades[3].GetState());
         }
 
-    public static string GetWeaponName(string name)
+        public static string GetWeaponName(string name)
         {
             switch (name)
             {
