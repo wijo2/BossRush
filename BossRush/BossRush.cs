@@ -17,7 +17,7 @@ namespace BossRush
     {
         private const string pluginGuid = "ddoor.BossRush.wijo";
         private const string pluginName = "BossRush";
-        private const string pluginVersion = "0.6";
+        private const string pluginVersion = "0.7";
 
         public static bool active = false; //is the mod active in current playing session
 
@@ -164,10 +164,9 @@ namespace BossRush
         [HarmonyPrefix]
         public static bool ThingDead(DamageableCharacter __instance)
         {
-            //L(__instance.gameObject.name + " died :c");
+            L("\"" + __instance.gameObject.name + "\" " + "died :c");
             if (active && __instance.gameObject.name == "PLAYER" && OptionsMenu.styleSelect.GetState() == 1) { titleTimer = 6f; }
             if (!active || __instance.gameObject.name != fightsYetToBeFought[0].goal) { return true; }
-            //L("It's a boss c:");
 
             switch (__instance.gameObject.name)
             {
@@ -188,6 +187,9 @@ namespace BossRush
                     LoadNextMap();
                     return false;
                 case "old_crow_boss_fbx":
+                    LoadNextMap();
+                    break;
+                case "POT_Mimic_Melee_Big Variant":
                     LoadNextMap();
                     break;
                 case "BOSS_lord_of_doors NEW":

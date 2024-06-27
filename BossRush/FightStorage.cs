@@ -22,6 +22,8 @@ namespace BossRush
             {FightName.lod, new FightData("lvl_HallOfDoors_BOSSFIGHT", new Vector3(-556f, 499f, -45.5f), "BOSS_lord_of_doors NEW") },
             {FightName.steadhone, new FightData("lvl_Graveyard", new Vector3(21.9f, 56.64f, 411.6f), "BOSS_GraveDigger") },
 
+            {FightName.bigPot, new FightData("lvl_GrandmaMansion", new Vector3(-59f, 34f, 1030f), "POT_Mimic_Melee_Big Variant") },
+
             //arenas
 
             // graveyard
@@ -60,15 +62,16 @@ namespace BossRush
             {FightName.ava4, new FightData("AVARICE_WAVES_Secret", new Vector3(0, 1, 5), "Room_Main/_CONTENTS/EmptyWaveBattle/WaveControl") },
         };
 
-        public static FightName[] defaultFightOrder = new FightName[] 
-        { 
-            FightName.dfs, 
-            FightName.graveyard_1, 
-            FightName.graveyard_2, 
+        public static FightName[] defaultFightOrder = new FightName[]
+        {
+            FightName.dfs,
+            FightName.graveyard_1,
+            FightName.graveyard_2,
             FightName.gotd, 
             /*FightName.manor_crow_1, these need special work cause always same order thing not worth for now at least
             FightName.manor_crow_3,
             FightName.manor_crow_4,*/
+            FightName.bigPot,
             FightName.ava1,
             FightName.forest_roman_gardens, 
             FightName.forest_mushroom,
@@ -120,18 +123,18 @@ namespace BossRush
         public static Dictionary<int, int[]> nmgStatPreset = new Dictionary<int, int[]>() //index = fight where you first have stats (starts at 0 cause list)
         {
             {4, new int[] {2,0,0,0} },
-            {7, new int[] {3,0,0,0} },
-            {12, new int[] {4,0,0,0} },
-            {21, new int[] {5,1,0,0} },
-            {23, new int[] {5,2,0,0} }
+            {8, new int[] {3,0,0,0} },
+            {13, new int[] {4,0,0,0} },
+            {22, new int[] {5,1,0,0} },
+            {24, new int[] {5,2,0,0} }
         };
 
         public static Dictionary<int, int[]> nmgLowStatPreset = new Dictionary<int, int[]>() //index = fight where you first have stats (starts at 0 cause list)
         {
-            {5, new int[] {2,0,0,0} },
-            {12, new int[] {3,0,0,0} },
-            {19, new int[] {4,0,0,0} },
-            {23, new int[] {5,0,0,0} },
+            {6, new int[] {2,0,0,0} },
+            {13, new int[] {3,0,0,0} },
+            {20, new int[] {4,0,0,0} },
+            {24, new int[] {5,0,0,0} },
         };
 
         public static Dictionary<int, int[]>[] statDicts = new Dictionary<int, int[]>[] { zeroStats, nmgStatPreset, nmgLowStatPreset };
@@ -187,6 +190,7 @@ namespace BossRush
         gc,
         lod,
         steadhone,
+        bigPot,
         graveyard_1,
         graveyard_2,
         manor_crow_1,
