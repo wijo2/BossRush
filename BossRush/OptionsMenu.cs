@@ -33,7 +33,7 @@ namespace BossRush
             new GUIBox.ToggleOption("hookshot"),
         };
 
-        public static GUIBox.SelectionGridOption stats = new GUIBox.SelectionGridOption(new string[] { "00", "nmg", "nmgLow" });
+        public static GUIBox.SelectionGridOption stats = new GUIBox.SelectionGridOption(new string[] { "00", "nmg", "nmgLow", "nmgLowHasty" });
 
         //rouglike select
         public static GUIBox.SelectionGridOption rWeaponStyle = new GUIBox.SelectionGridOption(new string[] { "Random Weapon", "Unlock Weapons (wip)" });
