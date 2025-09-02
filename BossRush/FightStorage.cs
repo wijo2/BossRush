@@ -145,7 +145,14 @@ namespace BossRush
             {24, new int[] {5, 0, 1, 0}} // lod
         };
 
-        public static Dictionary<int, int[]>[] statDicts = new Dictionary<int, int[]>[] { zeroStats, nmgStatPreset, nmgLowStatPreset, nmgLowHastyStatPreset };
+        public static Dictionary<int, int[]> teLowHastyStatPreset = new Dictionary<int, int[]>() {
+            {4, new int[] {1, 0, 1, 0}}, // big pot
+            {6, new int[] {2, 0, 1, 0}}, // first forest arena
+            {13, new int[] {3, 0, 1, 0}}, // lockstone crow 1
+            {18, new int[] {3, 0, 2, 0}}, // ice arena after early night
+        };
+
+        public static Dictionary<int, int[]>[] statDicts = new Dictionary<int, int[]>[] { zeroStats, nmgStatPreset, nmgLowStatPreset, nmgLowHastyStatPreset, teLowHastyStatPreset };
 
         public static int[] GiveStats(FightName fight, Dictionary<int, int[]> statDict)
         {
