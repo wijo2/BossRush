@@ -22,7 +22,7 @@ namespace BossRush
             {FightName.lod, new FightData("lvl_HallOfDoors_BOSSFIGHT", new Vector3(-556f, 499f, -45.5f), "BOSS_lord_of_doors NEW") },
             {FightName.steadhone, new FightData("lvl_Graveyard", new Vector3(21.9f, 56.64f, 411.6f), "BOSS_GraveDigger") },
 
-            {FightName.bigPot, new FightData("lvl_GrandmaMansion", new Vector3(-59f, 34f, 1030f), "POT_Mimic_Melee_Big Variant") },
+            {FightName.bigPot, new FightData("lvl_GrandmaMansion", new Vector3(-65.2f, 34f, 1036f), "POT_Mimic_Melee_Big Variant") }, // Vector3(-59f, 34f, 1030f)
 
             //arenas
 
@@ -57,7 +57,7 @@ namespace BossRush
 
             // avas
             {FightName.ava1, new FightData("AVARICE_WAVES_Mansion", new Vector3(0, 1, 5), "Room_Main/_CONTENTS/EmptyWaveBattle/WaveControl") },
-            {FightName.ava2, new FightData("AVARICE_WAVES_Forest", new Vector3(0, 1, 12.24f), "Room_Main/_CONTENTS/EmptyWaveBattle/WaveControl") },
+            {FightName.ava2, new FightData("AVARICE_WAVES_Forest", new Vector3(0, 1, 5), "Room_Main/_CONTENTS/EmptyWaveBattle/WaveControl") }, // Vector3(0, 1, 12.2f)
             {FightName.ava3, new FightData("AVARICE_WAVES_Fortress", new Vector3(0, 1, 5), "Room_Main/_CONTENTS/EmptyWaveBattle/WaveControl") },
             {FightName.ava4, new FightData("AVARICE_WAVES_Secret", new Vector3(0, 1, 5), "Room_Main/_CONTENTS/EmptyWaveBattle/WaveControl") },
         };
